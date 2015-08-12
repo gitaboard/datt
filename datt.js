@@ -1,23 +1,56 @@
 if (Meteor.isClient) {
-  // counter starts at 0
-  Session.setDefault('counter', 0);
+  var userName = "leefaus";
 
   Template.hello.helpers({
-    counter: function () {
-      return Session.get('counter');
+    prettyDate: function(dateString) {
+      return moment(new Date(dateString)).fromNow();
     }
   });
 
   Template.hello.events({
     'click button': function () {
-      // increment the counter when button is clicked
-      Session.set('counter', Session.get('counter') + 1);
+      Meteor.call('getUserInfo', 'leefaus', function(error, result) {
+        console.log(result);
+        Session.set('events', result);
+      });
     }
   });
+
+  Template.hello.recentEvents = function() {
+    return Session.get('events') || []
+  }
+
+  Template.hello.userName = function() {
+    return userName;
+  }
+
 }
 
 if (Meteor.isServer) {
+  Meteor.methods({
+    getUserInfo: function(userName) {
+      var github = new GitHub({
+        version: "3.0.0",
+        debug: true,
+        protocol: "https",
+        // host: "faushouse.vm",
+        // pathPrefix: "/api/v3",
+        timeout: 5000,
+        headers: {
+          "user-agent": "do-all-the-things-io"
+        }
+      });
+
+      var result = github.events.getFromUser({
+        user: "leefaus"
+      });
+
+      return result;
+    }
+  })
+
   Meteor.startup(function () {
-    // code to run on server at startup
   });
+
+
 }

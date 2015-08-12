@@ -3,12 +3,17 @@
 </head>
 
 <body>
-  <h1>Welcome to Meteor!</h1>
+  <h1>Welcome to GiHub Meteor!</h1>
 
   {{> hello}}
 </body>
 
 <template name="hello">
-  <button>Click Me</button>
-  <p>You've pressed the button {{counter}} times.</p>
+  <button>Fetch GitHub Data</button>
+  <p>Recent Events for {{userName}}</p>
+  <ul>
+    {{#each recentEvents}}
+    <li>test:: {{actor.login}} || {{org.login}} || {{type}} || {{prettyDate created_at}}</li>
+    {{/each}}
+  </ul>
 </template>
