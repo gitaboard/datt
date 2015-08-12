@@ -4,6 +4,14 @@ if (Meteor.isClient) {
   Template.hello.helpers({
     prettyDate: function(dateString) {
       return moment(new Date(dateString)).fromNow();
+    },
+
+    recentEvents: function() {
+      return Session.get('events') || [];
+    },
+
+    userName: function() {
+      return userName;
     }
   });
 
@@ -15,14 +23,6 @@ if (Meteor.isClient) {
       });
     }
   });
-
-  Template.hello.recentEvents = function() {
-    return Session.get('events') || []
-  }
-
-  Template.hello.userName = function() {
-    return userName;
-  }
 
 }
 
